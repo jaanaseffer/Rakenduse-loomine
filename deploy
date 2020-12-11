@@ -54,6 +54,18 @@ cmd "git pull"
 # Restores database from dump
 cmd 'refresh_mongodb.sh'
 
+log 'go to techworld folder'
+cmd 'cd /techworld/'
+
+log 'pull the image'
+cmd 'docker pull -t 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:latest .'
+
+log 'docker-compose'
+cmd 'docker-compose -f docker-compose.yaml up'
+
+log 'go back to main'
+cmd 'cd ..'
+
 # Make the deploy executable
 cmd 'chmod +x deploy'
 
