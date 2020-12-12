@@ -70,7 +70,7 @@ cmd 'npm run test'
 cd ..
 
 # Remove old version
-if [ "$( docker container inspect -f '{{. State. Running}}' my-app )" == "true" ]; then
+if [ "$( docker container inspect -f '{{. State. Running}}' 1307ed8a9812 )" == "true" ]; then
   cmd "docker stop my-app" # Stop previous container
   cmd "docker rmi my-app" # Remove the image
 fi
