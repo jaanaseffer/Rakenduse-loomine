@@ -11,31 +11,31 @@ OUTPUT=''
 
 log() {
         # Output immediately (for terminal and web)
-        echo -e "$1"
+        echo -e $1
 
         # Collect OUTPUT (for sending email later)
         OUTPUT+="$1"$'\n'
 }
 
 cmd() {
-        log "Doing '*@'"
+        log "Doing '$@'"
 
         # Run the command and capture its output and exit code
-        COMMAND_OUTPUT=$(@ 2>&1)
+        COMMAND_OUTPUT=`$@ 2>&1`
         COMMAND_EXIT_CODE=$?
 
         # Add command output to OUTPUT
         OUTPUT+=$COMMAND_OUTPUT$'\n'
 
         # Send the command output to stdout too
-        echo -e "$COMMAND_OUTPUT$"'\n'
+        echo -e $COMMAND_OUTPUT$'\n'
 
         if [[ $COMMAND_EXIT_CODE -ne 0 ]]; then
 
                 log "The previous command returned non-zero exit code. Aborting."
 
                 # Send email to me
-                mail -s 'message subject' -aFrom:jaana@jaanamairitbank.online jaana.seffer@khk.ee <<< "$OUTPUT"
+                mail -s 'message subject' -aFrom:jaana@jaanamairitbank.online jaana.seffer@khk.ee <<< $OUTPUT
 
                 # Stop the script
                 exit $?
@@ -58,7 +58,7 @@ cmd 'refresh_mongodb.sh'
 cmd 'chmod +x deploy'
 
 # Go to app folder
-'cd techworld/app'
+cd techworld/app
 
 # Install dependencies
 cmd 'npm i'
@@ -76,7 +76,7 @@ if [[ $(docker container inspect -f '{{.State.Running}}' 1307ed8a9812 == "true")
 fi
 
 # Build image
-TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
+TIMESTAMP=`date +%Y-%m-%d_%H-%M-%S`
 cmd 'docker build -t my-app .'
 cmd "docker tag my-app:latest 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 cmd "docker push 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
