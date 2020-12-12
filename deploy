@@ -58,7 +58,7 @@ cmd 'refresh_mongodb.sh'
 cmd 'chmod +x deploy'
 
 # Go to app folder
-cd app
+cd techworld
 
 # Install dependencies
 cmd 'npm i'
@@ -70,7 +70,7 @@ cmd 'npm run test'
 cd ..
 TIMESTAMP="date +%Y-%m-&d-%H-%M-%S"
 cmd 'docker build -t my-app .'
-cmd "docker tag my-app:latest 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
+cmd "docker tag my-app:$TIMESTAMP 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 cmd "docker push 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 
 # Go back to main folder
