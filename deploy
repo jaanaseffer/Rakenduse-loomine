@@ -70,8 +70,9 @@ cmd 'npm run test'
 cd ..
 
 # Remove old version
-cmd "docker stop my-app" # Stop previous container
-cmd "docker rmi my-app" # Remove the image
+if [[ $(docker ps -f "name=my-app" == "may-app") ]]
+  cmd "docker stop my-app" # Stop previous container
+  cmd "docker rmi my-app" # Remove the image
 
 # Build image
 TIMESTAMP=`date +%Y-%m-%d_%H-%M-%S`
