@@ -81,5 +81,5 @@ cmd 'docker build -t my-app .'
 cmd "docker tag my-app:latest 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 cmd "docker push 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 
-# Run the image
+# Run the imagedfgdfg
 cmd "docker run -d --name my-app"
