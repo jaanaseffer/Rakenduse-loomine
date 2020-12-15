@@ -8,6 +8,7 @@ echo -e "Content-Type: text/html\n"
 
 # Variables
 OUTPUT=''
+RUNNING=$(docker inspect --format '{{.State.Running}}' test)
 
 log() {
         # Output immediately (for terminal and web)
@@ -71,7 +72,7 @@ cd ..
 
 # Remove old version
 # shellcheck disable=SC2046
-if [ $(docker container inspect -f '{{.State.Running}}' 1307ed8a9812 == "true") ]; then
+if [ "$RUNNING" == true ]; then
   cmd "docker stop my-app" # Stop previous container
   cmd "docker rmi my-app" # Remove the image
 fi
