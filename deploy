@@ -71,17 +71,15 @@ cmd 'npm run test'
 cd ..
 
 # Remove old version
-# shellcheck disable=SC2046
 if [ "$RUNNING" == true ]; then
-  cmd "docker stop my-app" # Stop previous container
-  cmd "docker rmi my-app" # Remove the image
+  cmd "docker stop 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app" # Stop previous container
 fi
 
 # Build image
 TIMESTAMP=`date +%Y-%m-%d_%H-%M-%S`
-cmd 'docker build -t my-app .'
-cmd "docker tag my-app:latest 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
+cmd 'docker build -t 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app .'
+cmd "docker tag  290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:latest 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 cmd "docker push 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 
 # Run the image
-cmd "docker run -d --name my-app"
+cmd "docker run -d --name  290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app"
