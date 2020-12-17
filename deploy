@@ -71,7 +71,7 @@ cmd 'npm run test'
 cd ..
 
 # Login to update token
-cmd 'sudo -u www-data aws ecr get-login --region region --no-include-email'
+#cmd 'sudo -u www-data aws ecr get-login --region region --no-include-email'
 
 # Remove old version
 if [ "$RUNNING" == true ]; then
