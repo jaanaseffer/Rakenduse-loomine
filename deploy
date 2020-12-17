@@ -70,15 +70,18 @@ cmd 'npm run test'
 # Go back to project root folder
 cd ..
 
+# Login to update token
+cmd 'sudo -u www-data aws ecr get-login --region region --no-include-email'
+
 # Remove old version
 if [ "$RUNNING" == true ]; then
-  cmd "docker stop 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app" # Stop previous container
+  cmd "docker stop my-app" # Stop previous container
 fi
 
 # Build image
 TIMESTAMP=`date +%Y-%m-%d_%H-%M-%S`
-cmd 'docker build -t 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app .'
-cmd "docker tag  290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:latest 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
+cmd 'docker build -t my-app .'
+cmd "docker tag my-app 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 cmd "docker push 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 
 # Run the image
