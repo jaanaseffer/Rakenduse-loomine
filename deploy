@@ -8,7 +8,6 @@ echo -e "Content-Type: text/html\n"
 
 # Variables
 OUTPUT=''
-RUNNING=$(docker inspect --format '{{.State.Running}}' test)
 
 log() {
         # Output immediately (for terminal and web)
@@ -74,8 +73,10 @@ cd ..
 #cmd 'sudo -u www-data aws ecr get-login --region region --no-include-email'
 
 # Remove old version
-if [ "$RUNNING" == true ]; then
-  cmd "docker stop my-app" # Stop previous container
+if [ ! "$(docker ps -q -f name=my-app)" ]; then
+    if [ "$(docker ps -aq -f status=exited -f name=my-app)" ]; then
+        # cleanup
+        docker stop my-app
 fi
 
 # Build image
@@ -85,4 +86,4 @@ cmd "docker tag my-app 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIME
 cmd "docker push 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 
 # Run the image
-cmd "docker run -d --name  290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app"
+cmd "docker run -d --name 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app"
