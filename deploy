@@ -76,7 +76,8 @@ cd ..
 if [ ! "$(docker ps -q -f name=my-app)" ]; then
     if [ "$(docker ps -aq -f status=exited -f name=my-app)" ]; then
         # cleanup
-        docker stop my-app
+        cmd 'docker stop my-app'
+      fi
 fi
 
 # Build image
