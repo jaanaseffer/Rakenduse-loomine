@@ -69,6 +69,8 @@ cmd 'npm run test'
 # Go back to project root folder
 cd ..
 
+cmd "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 290390812374.dkr.ecr.us-east-2.amazonaws.com"
+
 # Build image
 TIMESTAMP=`date +%Y-%m-%d_%H-%M-%S`
 cmd "docker build -t my-app ."
