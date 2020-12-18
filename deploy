@@ -69,22 +69,27 @@ cmd 'npm run test'
 # Go back to project root folder
 cd ..
 
-# Login to update token
-#cmd 'sudo -u www-data aws ecr get-login --region region --no-include-email'
-
-# Remove old version
-if [ ! "$(docker ps -q -f name=my-app)" ]; then
-    if [ "$(docker ps -aq -f status=exited -f name=my-app)" ]; then
-        # cleanup
-        cmd 'docker stop my-app'
-      fi
-fi
-
 # Build image
 TIMESTAMP=`date +%Y-%m-%d_%H-%M-%S`
 cmd 'docker build -t my-app .'
+
+# Tag
 cmd "docker tag my-app 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
+
+# Push the docker to aws
 cmd "docker push 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 
 # Run the image
-cmd "docker run -d --name 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app"
+cmd "docker run -d --name 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
+
+if [ ! "$(docker ps -q -f name=my-app)" ]; then
+    if [ "$(docker ps -aq -f status=exited -f name=my-app)" ]; then
+        # cleanup
+        cmd "docker rm 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
+    fi
+    # Run container
+    cmd "docker run 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
+fi
+
+
+
