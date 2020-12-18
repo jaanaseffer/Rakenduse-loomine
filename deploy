@@ -79,14 +79,8 @@ cmd "docker tag my-app:latest 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-ap
 # Push the docker to aws
 cmd "docker push 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 
-if [ ! "$(docker ps -q -f name=my-app)" ]; then
-    if [ "$(docker ps -aq -f status=exited -f name=my-app)" ]; then
-        # cleanup
-        cmd "docker rm 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
-    fi
-    # Run container
-    cmd "docker run 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
-fi
+# Run container
+cmd "docker run 290390812374.dkr.ecr.us-east-2.amazonaws.com/my-app:$TIMESTAMP"
 
 
 
